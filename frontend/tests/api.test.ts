@@ -1,4 +1,4 @@
-import type { RecipeType } from '../src/types/recipe';
+import type { RecipeType } from '../src/types/movieTypes';
 import { expect, it } from '@jest/globals';
 import { RecipeMapper } from '../src/api/recipeMapper';
 import { mockRecipeResponseBody } from './fixtures/mockResponse';

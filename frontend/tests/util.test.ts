@@ -1,5 +1,5 @@
 import { expect, it } from '@jest/globals';
-import { scaleIngredient } from '../src/utils/amountFormatter';
+import { scaleIngredient } from '../src/utils/movieMapper';
 
 const ingredients = [
   "1-2 fresh Thai bird chili peppers (thinly sliced)",

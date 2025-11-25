@@ -1,9 +1,9 @@
+import type { FilterType } from '../types/movieTypes';
+
 const API_ACCESS_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhOTMyNWY2NzlhMGVlYjQ3M2ZjYTJhZDM1ZmVkMjdlNCIsIm5iZiI6MTc1ODc2MTY2My4zNTIsInN1YiI6IjY4ZDQ5MmJmODM4N2FkYzZjOTkxMzkxZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.z-aSlS1E83jzYdGMnJQptk1KUqkj3Uyg5_cUHTJMrLA';
 
-const BASE_URL = 'https://api.themoviedb.org';
-
 export class MovieApi {
-  private async sendRequest(payload: object, url: string, method: string) {
+  private async sendRequest(url: string, method: string, payload?: object) {
     const options: RequestInit = {
       method,
       headers: {
@@ -17,19 +17,16 @@ export class MovieApi {
     }
 
     const response: Response = await fetch(url, options);
-    return response;
-  }
 
-  async getData(payload: object) {
-    // const url = `${BASE_URL}/3/movie/286217`;
-    const url = 'https://api.themoviedb.org/3/movie/286217/images';
-    const response = await this.sendRequest(payload, url, 'GET');
-
-    if (response.status !== 200) {
+    if (!response.ok) {
       throw new Error(`Failed to get data: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    return await response.json();
+  }
+
+  async getMovie(url: string) {
+    const data = await this.sendRequest(url, 'GET');
     return data;
   }
 }

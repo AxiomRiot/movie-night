@@ -1,32 +1,44 @@
-// const regex = /(?:(\d+(?:[ /-]?\d+)?(?:\s*(?:-|\bor\b)\s*\d+(?:[ /-]?\d+)?)?|½|¼)\s*(?:cup|tablespoons?|teaspoons?|tbsp|tsp)?)(?:\s+)?(.+)/g;
-const uniCodeMap = {
-  '¼': 0.25,
-  '⅓': 0.33,
-  '½': 0.5,
-  '⅔': 0.67,
-  '¾': 0.75,
-};
+const API_ACCESS_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhOTMyNWY2NzlhMGVlYjQ3M2ZjYTJhZDM1ZmVkMjdlNCIsIm5iZiI6MTc1ODc2MTY2My4zNTIsInN1YiI6IjY4ZDQ5MmJmODM4N2FkYzZjOTkxMzkxZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.z-aSlS1E83jzYdGMnJQptk1KUqkj3Uyg5_cUHTJMrLA';
 
-const unicodePattern = Object.keys(uniCodeMap).join('|');
-const amountRegex = new RegExp(
-  `(\\d+\\s\\d+/\\d+|\\d+\\.\\d+|\\d+/\\d+|\\d+|${unicodePattern})`,
-  'g'
-);
-// const amountRegex = /(\d+\s\d+\/\d+|\d+\.\d+|\d+\/\d+|\d+|¼|⅓|½|⅔|¾)/g;
+async function fetchData() {
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': `Bearer ${API_ACCESS_KEY}`,
+    },
+  };
 
-const ingredients = [
-  "1-2 fresh Thai bird chili peppers (thinly sliced)",
-  "½ cup oil",
-  "1/2- 1 1/2 tablespoons Sichuan peppercorns (powdered or finely ground, reserving 1/4 teaspoon for garnish at the end; if you want a milder flavor use 1/2 or 1 teaspoon ground Sichuan peppercorn)",
-  "1 1/2 teaspoons cornstarch",
-  "1 to 2 dried red chili peppers"
-];
+  // const url = `https://api.themoviedb.org/3/account`;
+  // const url = 'https://api.themoviedb.org/3/search/movie?query=Aliens&include_adult=false&language=en-US&page=1';
+  const url = 'https://api.themoviedb.org/3/movie/679?language=en-US';
 
-ingredients.forEach(line => {
-  const match = line.match(amountRegex);
-  if (match) {
-    console.log(match);
-  } else {
-    console.log(`No match for: "${line}"`);
-  }
-});
+  const response = await fetch(url, options);
+  const data = await response.json();
+
+  console.warn(data);
+}
+
+async function postData() {
+  const url = 'https://api.themoviedb.org/3/account/22335753/watchlist';
+  const options = {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'content-type': 'application/json',
+      'Authorization': `Bearer ${API_ACCESS_KEY}`,
+    },
+    body: JSON.stringify({
+      media_type: 'movie',
+      media_id: 679,
+      watchlist: true,
+    }),
+  };
+
+  const response = await fetch(url, options);
+  const data = await response.json();
+
+  console.warn(data);
+}
+
+postData();
